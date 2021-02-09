@@ -1,0 +1,3 @@
+function gSlimCarousel() {
+  // TODO
+}

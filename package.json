@@ -1,5 +1,5 @@
 {
-  "name": "@graficos/g-slim-carousel",
+  "name": "root",
   "version": "0.0.0",
   "description": "Responsive carousel image gallery",
   "main": "index.js",
@@ -8,5 +8,10 @@
   "private": false,
   "devDependencies": {
     "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "diff": "lerna diff",
+    "status": "lerna change",
+    "publish": "lerna publish"
   }
 }

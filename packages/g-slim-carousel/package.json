@@ -3,20 +3,51 @@
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "gangsthub <paulmelero@gmail.com>",
-  "homepage": "",
+  "homepage": "https://github.com/graficos/g-slim-carousel",
   "license": "MIT",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "dist/index.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/lovetoknow"
+    "access": "public"
   },
+  "repository": "graficos-net/g-slim-carousel",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "jest",
+    "test:watch": "yarn test --watch",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "build": "yarn clean; rollup -c",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "@types/jest": "^26.0.20",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.19.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.38.5",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "sass": "^1.32.6",
+    "sass-loader": "^11.0.1",
+    "ts-jest": "^26.5.1",
+    "ts-loader": "^8.0.16",
+    "typescript": "^4.1.4"
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "yarn": "^1.5"
   }
 }
