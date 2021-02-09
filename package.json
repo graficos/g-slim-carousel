@@ -1,5 +1,5 @@
 {
-  "name": "g-carousel",
+  "name": "@graficos/g-slim-carousel",
   "version": "0.0.0",
   "description": "Responsive carousel image gallery",
   "main": "index.js",
