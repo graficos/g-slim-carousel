@@ -1,0 +1,9 @@
+{
+  "name": "g-carousel",
+  "version": "0.0.0",
+  "description": "Responsive carousel image gallery",
+  "main": "index.js",
+  "author": "paulmelero@gmail.com",
+  "license": "MIT",
+  "private": false
+}
