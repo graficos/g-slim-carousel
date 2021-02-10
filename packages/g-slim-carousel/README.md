@@ -1,11 +1,6 @@
 # `g-slim-carousel`
 
-> TODO: description
+## Resources:
 
-## Usage
-
-```
-const gSlimCarousel = require('g-slim-carousel');
-
-// TODO: DEMONSTRATE API
-```
+- (A11Y) WCAG section on Carousel Concepts: https://www.w3.org/WAI/tutorials/carousels/
+- Styling React Components in Sass: https://hugogiraudel.com/2015/06/18/styling-react-components-in-sass/

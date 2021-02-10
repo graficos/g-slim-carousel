@@ -1,0 +1,12 @@
+@import '../../assets/scss/abstracts/variables';
+
+.g-slim__arrow {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.g-slim__arrow--prev {
+  left: $arrows-horizontal-bleed;
+}
+.g-slim__arrow--next {
+  right: $arrows-horizontal-bleed;
+}

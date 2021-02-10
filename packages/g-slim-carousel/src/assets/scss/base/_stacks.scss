@@ -1,0 +1,7 @@
+$Z_INDEXES: 0, 1, 2;
+
+@each $index in $Z_INDEXES {
+  .z-#{$index} {
+    z-index: $index;
+  }
+}

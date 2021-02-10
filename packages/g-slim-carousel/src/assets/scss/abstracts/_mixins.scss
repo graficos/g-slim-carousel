@@ -1,0 +1,14 @@
+@mixin generateColorClasses($colorName, $value) {
+  .#{$colorName} {
+    background-color: $value;
+  }
+  .#{$colorName}--text {
+    color: $value;
+  }
+  .#{$colorName}--fill {
+    fill: $value;
+  }
+  .#{$colorName}--stroke {
+    stroke: $value;
+  }
+}

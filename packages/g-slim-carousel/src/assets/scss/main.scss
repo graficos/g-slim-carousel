@@ -1,0 +1,14 @@
+// increased specificity and avoid collisions
+.g-slim {
+  @import 'abstracts/variables';
+  @import 'abstracts/functions';
+  @import 'abstracts/mixins';
+
+  @import 'themes/theme';
+
+  @import 'base/reset';
+  @import 'base/position';
+  @import 'base/colors';
+  @import 'base/visibility';
+  @import 'base/stacks';
+}

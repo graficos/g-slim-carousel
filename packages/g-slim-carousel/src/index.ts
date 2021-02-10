@@ -1,3 +1,2 @@
-function gSlimCarousel() {
-  // TODO
-}
+export * from './components/Carousel';
+export * from './core';

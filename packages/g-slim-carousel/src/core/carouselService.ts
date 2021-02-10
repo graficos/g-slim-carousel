@@ -1,4 +1,4 @@
-import { CarouselServiceOptions } from './types.d';
+import { CarouselServiceOptions } from './types';
 
 export class CarouselService {
   private index = 0;
@@ -14,6 +14,7 @@ export class CarouselService {
     this.index = index < length - 1 ? index : length - 1;
     this.shouldLoop = shouldLoop;
     this.callback = callback;
+    console.log('instantiated', this.index);
   }
   get current(): number {
     return this.index;
