@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
-import { useInterval /* useSize  */ } from 'react-use';
+import { useInterval, useRafState } from 'react-use';
 
 import useCarousel from '../../use/carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
@@ -13,13 +13,16 @@ import './Carousel.scss';
 export interface CarouselProps {
   prevLabel: string;
   nextLabel: string;
-  onChange?: (index: number) => void;
+  pauseLabel: string;
+  resumeLabel: string;
   autoPlay?: boolean;
   interval?: number;
   shouldLoop?: boolean;
   transitionSpeed?: number;
   showArrows?: boolean;
   selectedItem?: number;
+  minHeight: string;
+  onChange?: (index: number) => void;
   children?: React.ReactNode[];
   className?: string;
 }
@@ -33,25 +36,26 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
     showArrows,
     prevLabel,
     nextLabel,
+    pauseLabel,
+    resumeLabel,
     selectedItem,
     shouldLoop,
     autoPlay,
     interval,
     transitionSpeed,
+    minHeight,
     onChange,
     children,
     className,
   } = props;
   const length = children?.length;
 
-  // State
-  const [isRunning, setIsRunning] = useState(true);
-  const [current, setCurrent] = useState(selectedItem);
+  const [isRunning, setIsRunning] = useRafState(true);
+  const [current, setCurrent] = useRafState(selectedItem);
   const [carousel] = useCarousel({ length, shouldLoop });
 
-  // logic
-  const updateCurrent = (i: number): void => {
-    setCurrent(i);
+  const updateCurrent = (index: number): void => {
+    setCurrent(index);
     onChange && onChange(current);
     console.log('changed', current);
   };
@@ -86,43 +90,47 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
     onMouseLeave: resume,
   };
 
-  const classes = classNames('g-slim relative', className);
+  const classes = classNames('g-slim', className);
+  const styles = { minHeight };
 
   return (
     <div className={classes}>
-      {showArrows && (
-        <button
-          className='absolute z-1 g-slim__arrow g-slim__arrow--prev'
-          title={prevLabel}
-          onClick={handlePrevious}
-          {...pauseOnHover}
-        >
-          <Arrow label={prevLabel} direction={-1} />
-        </button>
-      )}
-      <div className='g-slim__carousel relative z-0'>
-        <h1 className='primary--text'>{current}</h1>
-        {children &&
-          children.map((el, i) => {
-            return (
-              <Slide key={i} current={current} speed={transitionSpeed} {...pauseOnHover}>
-                {el}
-              </Slide>
-            );
-          })}
-        <button onClick={isRunning ? pause : resume} className='g-slim__pause'>
-          {isRunning ? 'Pause' : 'Resume'}
-        </button>
+      <div className='wrapper relative' style={styles} {...pauseOnHover}>
+        {showArrows && (
+          <button
+            className='absolute z-1 g-slim__arrow g-slim__arrow--prev grid place-center'
+            title={prevLabel}
+            onClick={handlePrevious}
+          >
+            <Arrow label={prevLabel} direction={-1} />
+          </button>
+        )}
+        <div className='g-slim__carousel overflow-hidden w-full z-0 absolute pin'>
+          {children &&
+            children.map((el, i) => {
+              return (
+                <Slide key={i} current={current} index={i} speed={transitionSpeed}>
+                  {el}
+                </Slide>
+              );
+            })}
+        </div>
+        {showArrows && (
+          <button
+            className='absolute z-1 g-slim__arrow g-slim__arrow--next grid place-center'
+            title={nextLabel}
+            onClick={handleNext}
+          >
+            <Arrow label={nextLabel} />
+          </button>
+        )}
       </div>
-      {showArrows && (
-        <button
-          className='absolute z-1 g-slim__arrow g-slim__arrow--next'
-          title={nextLabel}
-          onClick={handleNext}
-          {...pauseOnHover}
-        >
-          <Arrow label={nextLabel} />
-        </button>
+      {autoPlay && (
+        <div className='grid place-center'>
+          <button onClick={isRunning ? pause : resume} className='g-slim__pause'>
+            {isRunning ? pauseLabel : resumeLabel}
+          </button>
+        </div>
       )}
     </div>
   );

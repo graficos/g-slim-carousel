@@ -1,7 +1,7 @@
 {
   "name": "g-slim-carousel",
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "G Slim Carousel. A simple carousel for your React projects",
   "author": "gangsthub <paulmelero@gmail.com>",
   "homepage": "https://github.com/graficos/g-slim-carousel",
   "license": "MIT",

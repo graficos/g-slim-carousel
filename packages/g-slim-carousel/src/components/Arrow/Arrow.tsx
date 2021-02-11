@@ -37,17 +37,17 @@ export const Arrow: FC<ArrowProps> = (props: ArrowProps) => {
       y='0px'
       viewBox='0 0 17.4 31.7'
       enableBackground='new 0 0 17.4 31.7'
-      width='17.4'
+      width='12'
       style={svgStyles}
     >
       <title>{label}</title>
       <polyline
         fill='none'
-        /* stroke={disabled ? 'hsl(4, 79%, 84%)' : 'hsl(4, 79%, 64%)'} */
         strokeWidth='2'
         className={arrowClasses}
         strokeMiterlimit='10'
         points='15.9,29.5 2.2,15.8 15.9,2.2 '
+        transform='translate(-2)'
       />
     </svg>
   );
