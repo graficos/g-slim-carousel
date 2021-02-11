@@ -11,7 +11,7 @@ export const Arrow: FC<ArrowProps> = (props: ArrowProps) => {
   const { label, direction, disabled } = props;
   const getTransform = (direction) =>
     direction === 1
-      ? 'rotate(.5turn)'
+      ? 'scale(-1)'
       : direction === 'top'
       ? 'rotate(.25turn)'
       : direction === 'bottom'

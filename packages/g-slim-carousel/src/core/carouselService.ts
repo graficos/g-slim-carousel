@@ -1,7 +1,11 @@
+import { clamp } from '../utils/clamp';
 import { CarouselServiceOptions } from './types';
 
 export class CarouselService {
   private index = 0;
+  private length: CarouselServiceOptions['length'];
+  private shouldLoop: CarouselServiceOptions['shouldLoop'];
+  private callback: CarouselServiceOptions['callback'];
 
   constructor(
     { length = 0, index = 0, shouldLoop = true, callback }: CarouselServiceOptions = {
@@ -14,7 +18,6 @@ export class CarouselService {
     this.index = index < length - 1 ? index : length - 1;
     this.shouldLoop = shouldLoop;
     this.callback = callback;
-    console.log('instantiated', this.index);
   }
   get current(): number {
     return this.index;
@@ -51,7 +54,7 @@ export class CarouselService {
 
   goTo(index: number): void {
     if (index !== this.current) {
-      this.current = index;
+      this.current = clamp(index, 0, this.length - 1);
     }
     this.notify();
   }

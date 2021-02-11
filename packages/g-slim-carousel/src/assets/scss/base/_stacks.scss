@@ -1,4 +1,4 @@
-$Z_INDEXES: 0, 1, 2;
+$Z_INDEXES: -1, 0, 1, 2;
 
 @each $index in $Z_INDEXES {
   .z-#{$index} {

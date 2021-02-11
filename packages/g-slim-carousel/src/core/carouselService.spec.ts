@@ -33,11 +33,35 @@ describe('CarouselService', () => {
     expect(carousel.current).toBe(expected);
   });
   it('can advance if there is a next one', () => {
-    const carousel = new CarouselService({ length: 3 });
+    // arrange
+    const carousel = new CarouselService({
+      length: 3,
+    });
     // act
     carousel.next();
     // assert
     expect(carousel.current).toBe(1);
+  });
+  it('iterates in order each item every time', () => {
+    // arrange
+    const times = 6;
+    const length = 3;
+    const mockFn = jest.fn();
+    const carousel = new CarouselService({
+      length,
+      callback: mockFn,
+    });
+    // act
+    for (let i = 0; i < times; i++) {
+      carousel.next();
+    }
+    // assert
+    expect(mockFn).toHaveBeenNthCalledWith(1, 1);
+    expect(mockFn).toHaveBeenNthCalledWith(2, 2);
+    expect(mockFn).toHaveBeenNthCalledWith(3, 0);
+    expect(mockFn).toHaveBeenNthCalledWith(4, 1);
+    expect(mockFn).toHaveBeenNthCalledWith(5, 2);
+    expect(mockFn).toHaveBeenNthCalledWith(6, 0);
   });
   it('goes back to zero if advances passed the last one', () => {
     // arrange
@@ -88,5 +112,21 @@ describe('CarouselService', () => {
     expect(mockFn).toHaveBeenNthCalledWith(1, 1);
     expect(mockFn).toHaveBeenNthCalledWith(2, 0);
     expect(mockFn).toHaveBeenNthCalledWith(3, 3);
+  });
+  it('handles values higher than range', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5 });
+    // act
+    carousel.goTo(10);
+    // assert
+    expect(carousel.current).toBe(4);
+  });
+  it('handles values lower than 0', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5 });
+    // act
+    carousel.goTo(-10);
+    // assert
+    expect(carousel.current).toBe(0);
   });
 });

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 import { useInterval, useRafState } from 'react-use';
+import { AnimatePresence } from 'framer-motion';
 
 import useCarousel from '../../use/carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
@@ -22,10 +23,14 @@ export interface CarouselProps {
   showArrows?: boolean;
   selectedItem?: number;
   minHeight: string;
+  scaleOnHover?: number;
+  CustomButtonComponent?: JSX.Element;
   onChange?: (index: number) => void;
   children?: React.ReactNode[];
   className?: string;
 }
+
+export type Direction = 1 | -1;
 
 /**
  * G Slimg Carousel
@@ -43,7 +48,9 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
     autoPlay,
     interval,
     transitionSpeed,
+    scaleOnHover,
     minHeight,
+    CustomButtonComponent,
     onChange,
     children,
     className,
@@ -51,13 +58,12 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
   const length = children?.length;
 
   const [isRunning, setIsRunning] = useRafState(true);
-  const [current, setCurrent] = useRafState(selectedItem);
+  const [current, setCurrent] = useRafState<number>(selectedItem);
   const [carousel] = useCarousel({ length, shouldLoop });
 
   const updateCurrent = (index: number): void => {
     setCurrent(index);
     onChange && onChange(current);
-    console.log('changed', current);
   };
 
   // Autoplay
@@ -70,12 +76,16 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
   );
 
   // Controls
-  const handleNext = (): void => {
+  const handleNext = () => {
     carousel.next();
     updateCurrent(carousel.current);
   };
-  const handlePrevious = (): void => {
+  const handlePrevious = () => {
     carousel.previous();
+    updateCurrent(carousel.current);
+  };
+  const handleChildrenUpdate = (targetIndex) => {
+    carousel.goTo(targetIndex);
     updateCurrent(carousel.current);
   };
   const pause = () => {
@@ -96,38 +106,64 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
   return (
     <div className={classes}>
       <div className='wrapper relative' style={styles} {...pauseOnHover}>
-        {showArrows && (
-          <button
-            className='absolute z-1 g-slim__arrow g-slim__arrow--prev grid place-center'
-            title={prevLabel}
-            onClick={handlePrevious}
-          >
-            <Arrow label={prevLabel} direction={-1} />
-          </button>
-        )}
-        <div className='g-slim__carousel overflow-hidden w-full z-0 absolute pin'>
-          {children &&
-            children.map((el, i) => {
-              return (
-                <Slide key={i} current={current} index={i} speed={transitionSpeed}>
-                  {el}
-                </Slide>
-              );
-            })}
+        <h1 className='primary--text'>{current}</h1>
+        <div className='g-slim__carousel overflow-hidden w-full absolute pin grid place-center'>
+          <AnimatePresence>
+            {children &&
+              children.map((el, i) => {
+                return (
+                  <Slide
+                    key={i}
+                    current={current}
+                    index={i}
+                    transitionSpeed={transitionSpeed}
+                    scaleOnHover={scaleOnHover}
+                    onUpdate={handleChildrenUpdate}
+                    onDragStart={() => pause()}
+                    onDragEnd={() => resume()}
+                  >
+                    {el}
+                  </Slide>
+                );
+              })}
+          </AnimatePresence>
         </div>
-        {showArrows && (
-          <button
-            className='absolute z-1 g-slim__arrow g-slim__arrow--next grid place-center'
-            title={nextLabel}
-            onClick={handleNext}
-          >
-            <Arrow label={nextLabel} />
-          </button>
+        {CustomButtonComponent ? (
+          <CustomButtonComponent label={prevLabel} onClick={handlePrevious} direction={-1} />
+        ) : (
+          showArrows && (
+            <button
+              type='button'
+              className='absolute z-1 g-slim__arrow g-slim__arrow--prev grid place-center'
+              title={prevLabel}
+              onClick={handlePrevious}
+            >
+              <Arrow label={prevLabel} direction={-1} />
+            </button>
+          )
+        )}
+        {CustomButtonComponent ? (
+          <CustomButtonComponent label={nextLabel} onClick={handleNext} direction={1} />
+        ) : (
+          showArrows && (
+            <button
+              type='button'
+              className='absolute z-1 g-slim__arrow g-slim__arrow--next grid place-center'
+              title={nextLabel}
+              onClick={handleNext}
+            >
+              <Arrow label={nextLabel} />
+            </button>
+          )
         )}
       </div>
       {autoPlay && (
-        <div className='grid place-center'>
-          <button onClick={isRunning ? pause : resume} className='g-slim__pause'>
+        <div className='grid place-center g-slim__pause'>
+          <button
+            type='button'
+            onClick={isRunning ? pause : resume}
+            className='g-slim__pause__button'
+          >
             {isRunning ? pauseLabel : resumeLabel}
           </button>
         </div>

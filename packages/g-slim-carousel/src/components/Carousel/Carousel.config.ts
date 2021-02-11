@@ -6,6 +6,7 @@ export const DEFAULT_OPTIONS = {
   pauseLabel: 'Pause',
   resumeLabel: 'Resume',
   selectedItem: 0,
+  scaleOnHover: 1.1,
   autoPlay: true,
   interval: 3000,
   shouldLoop: true,

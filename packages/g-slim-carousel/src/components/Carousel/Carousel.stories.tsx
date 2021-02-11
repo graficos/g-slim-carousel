@@ -12,44 +12,60 @@ export default {
   },
 } as Meta;
 
-const getNImages = (
-  n: number,
-  src = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
-) => {
+const getNImages = (n: number) => {
   const listOfImages = Array(n)
     .fill()
-    .map((_, i) => <img key={i} src={src} loading='lazy' alt='' />);
+    .map((_, i) => (
+      <img
+        key={i}
+        src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+        loading='lazy'
+        alt=''
+      />
+    ));
 
   return listOfImages;
 };
 
 const Template: Story<CarouselProps> = (args) => {
+  const storyDebugOnChange = action(`Current index`);
   return (
-    <Carousel onChange={action('Updated index')} {...args}>
-      {getNImages(4)}
+    <Carousel onChange={storyDebugOnChange} {...args}>
+      {args.children || getNImages(5)}
     </Carousel>
   );
 };
 
-export const Default = Template.bind({});
+const createStory = (args) => {
+  const story = Template.bind({});
+  story.args = { ...args };
+  return story;
+};
 
-export const ManualProgress = Template.bind({});
-ManualProgress.args = { autoPlay: false };
+export const Default = createStory();
 
-export const NoArrows = Template.bind({});
-NoArrows.args = { showArrows: false };
+export const ManualProgress = createStory({ autoPlay: false });
 
-export const NoLoop = Template.bind({});
-NoLoop.args = { shouldLoop: false };
+export const NoArrows = createStory({ showArrows: false });
 
-export const CustomButtonLabels = Template.bind({});
-CustomButtonLabels.args = { nextLabel: '👉🏽', prevLabel: '👈🏽' };
+export const NoLoop = createStory({ shouldLoop: false });
 
-export const ConfigureTransitionSpeed = Template.bind({});
-ConfigureTransitionSpeed.args = { transitionSpeed: 120 };
+export const CustomButtonLabels = createStory({ nextLabel: '👉🏽', prevLabel: '👈🏽' });
 
-export const ConfigureAutoplayInterval = Template.bind({});
-ConfigureAutoplayInterval.args = { interval: 300 };
+export const ConfigureTransitionSpeed = createStory({ transitionSpeed: 120 });
 
-export const ConfigureInitialIndex = Template.bind({});
-ConfigureInitialIndex.args = { selectedItem: 2 };
+export const ConfigureAutoplayInterval = createStory({ interval: 1000 });
+
+export const ConfigureInitialIndex = createStory({ selectedItem: 2 });
+
+export const ImagesFromCDN = createStory({
+  children: ['software', 'development', 'imagination', 'creativity', 'art'].map((query, index) => (
+    <img
+      key={index}
+      src={`https://source.unsplash.com/1600x300/?${query}`}
+      alt=''
+      loading='lazy'
+      style={{ objectFit: 'contain' }}
+    />
+  )),
+});
