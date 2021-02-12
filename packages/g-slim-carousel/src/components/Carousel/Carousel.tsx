@@ -6,10 +6,8 @@ import { AnimatePresence } from 'framer-motion';
 import useCarousel from '../../use/carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
-import { Arrow } from '../Arrow/Arrow';
 import { Slide } from '../Slide/Slide';
-
-import './Carousel.scss';
+import { ArrowButtons } from '../ArrowButtons/ArrowButtons';
 
 export interface CarouselProps {
   prevLabel: string;
@@ -36,7 +34,7 @@ export type Direction = 1 | -1;
  * G Slimg Carousel
  * @see https://www.w3.org/WAI/tutorials/carousels/
  */
-export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
+export const Carousel: FC<CarouselProps> = (props) => {
   const {
     showArrows,
     prevLabel,
@@ -106,7 +104,7 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
   return (
     <div className={classes}>
       <div className='wrapper relative' style={styles} {...pauseOnHover}>
-        <h1 className='primary--text'>{current}</h1>
+        {/* <h1 className='primary--text'>{current}</h1> */}
         <div className='g-slim__carousel overflow-hidden w-full absolute pin grid place-center'>
           <AnimatePresence>
             {children &&
@@ -128,33 +126,14 @@ export const Carousel: FC<CarouselProps> = (props: CarouselProps) => {
               })}
           </AnimatePresence>
         </div>
-        {CustomButtonComponent ? (
-          <CustomButtonComponent label={prevLabel} onClick={handlePrevious} direction={-1} />
-        ) : (
-          showArrows && (
-            <button
-              type='button'
-              className='absolute z-1 g-slim__arrow g-slim__arrow--prev grid place-center'
-              title={prevLabel}
-              onClick={handlePrevious}
-            >
-              <Arrow label={prevLabel} direction={-1} />
-            </button>
-          )
-        )}
-        {CustomButtonComponent ? (
-          <CustomButtonComponent label={nextLabel} onClick={handleNext} direction={1} />
-        ) : (
-          showArrows && (
-            <button
-              type='button'
-              className='absolute z-1 g-slim__arrow g-slim__arrow--next grid place-center'
-              title={nextLabel}
-              onClick={handleNext}
-            >
-              <Arrow label={nextLabel} />
-            </button>
-          )
+        {showArrows && (
+          <ArrowButtons
+            CustomButtonComponent={CustomButtonComponent}
+            prevLabel={prevLabel}
+            nextLabel={nextLabel}
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+          />
         )}
       </div>
       {autoPlay && (

@@ -7,7 +7,7 @@ export interface ArrowProps {
   disabled: boolean;
 }
 
-export const Arrow: FC<ArrowProps> = (props: ArrowProps) => {
+export const Arrow: FC<ArrowProps> = (props) => {
   const { label, direction, disabled } = props;
   const getTransform = (direction) =>
     direction === 1
