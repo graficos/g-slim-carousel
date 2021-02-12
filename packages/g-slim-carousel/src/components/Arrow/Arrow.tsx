@@ -3,8 +3,8 @@ import classNames from 'classnames';
 
 export interface ArrowProps {
   label: string;
-  direction: number | 'top' | 'bottom';
-  disabled: boolean;
+  direction?: number | 'top' | 'bottom';
+  disabled?: boolean;
 }
 
 export const Arrow: FC<ArrowProps> = (props) => {

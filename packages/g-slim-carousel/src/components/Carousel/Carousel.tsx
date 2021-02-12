@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ElementType, FC } from 'react';
 import classNames from 'classnames';
 import { useInterval, useRafState } from 'react-use';
 import { AnimatePresence } from 'framer-motion';
@@ -14,15 +14,15 @@ export interface CarouselProps {
   nextLabel: string;
   pauseLabel: string;
   resumeLabel: string;
+  transitionSpeed: number;
+  scaleOnHover: number;
   autoPlay?: boolean;
   interval?: number;
   shouldLoop?: boolean;
-  transitionSpeed?: number;
   showArrows?: boolean;
   selectedItem?: number;
   minHeight: string;
-  scaleOnHover?: number;
-  CustomButtonComponent?: JSX.Element;
+  CustomButtonComponent?: ElementType;
   onChange?: (index: number) => void;
   children?: React.ReactNode[];
   className?: string;
@@ -53,10 +53,10 @@ export const Carousel: FC<CarouselProps> = (props) => {
     children,
     className,
   } = props;
-  const length = children?.length;
+  const length = children?.length || 1;
 
   const [isRunning, setIsRunning] = useRafState(true);
-  const [current, setCurrent] = useRafState<number>(selectedItem);
+  const [current, setCurrent] = useRafState<number>(selectedItem || 0);
   const [carousel] = useCarousel({ length, shouldLoop });
 
   const updateCurrent = (index: number): void => {

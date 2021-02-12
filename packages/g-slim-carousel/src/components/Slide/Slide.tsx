@@ -12,7 +12,7 @@ export interface SlideProps {
   onDragStart: () => void;
   onDragEnd: () => void;
   onUpdate: (newPage: number) => void;
-  children?: React.ReactNode[];
+  children?: React.ReactNode;
 }
 
 export const Slide: FC<SlideProps> = (props) => {
@@ -26,8 +26,8 @@ export const Slide: FC<SlideProps> = (props) => {
     onDragEnd,
     children,
   } = props;
-  const [direction, setDirection] = useState<Direction>(0);
-  const [ref, { width }] = useMeasure();
+  const [direction, setDirection] = useState<Direction>(1);
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   const variants = {
     enter: (direction: number) => {
