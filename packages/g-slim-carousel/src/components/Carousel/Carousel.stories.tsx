@@ -27,6 +27,10 @@ const getNImages = (n: number) => {
   return listOfImages;
 };
 
+const getRandomWidthFromBoundaries = (min, max) => {
+  return min + Math.floor(Math.random() * Math.floor(max));
+};
+
 const Template: Story<CarouselProps> = (args) => {
   const storyDebugOnChange = action(`Current index`);
   return (
@@ -82,11 +86,11 @@ export const ConfigureAutoplayInterval = createStory({ interval: 1000 });
 
 export const ConfigureInitialIndex = createStory({ selectedItem: 2 });
 
-export const ImagesFromCDN = createStory({
+export const ImagesFromCDNWithRandomWidth = createStory({
   children: ['software', 'development', 'imagination', 'creativity', 'art'].map((query, index) => (
     <Image
       key={index}
-      src={`https://source.unsplash.com/1600x300/?${query}`}
+      src={`https://source.unsplash.com/${getRandomWidthFromBoundaries(500, 1600)}x300/?${query}`}
       style={{ objectFit: 'contain' }}
     />
   )),
