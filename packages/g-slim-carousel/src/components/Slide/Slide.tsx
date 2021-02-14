@@ -1,12 +1,15 @@
-import React, { FC, useState } from 'react';
-// import { debounce } from '../../utils/debounce';
+import React, { FC, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useMeasure } from 'react-use';
+
 import { Direction } from '../Carousel/Carousel';
+
+import './Slide.scss';
+import { clamp } from '../../utils/clamp';
 
 export interface SlideProps {
   current: number;
   index: number;
+  length: number;
   transitionSpeed: number;
   scaleOnHover: number;
   onDragStart: () => void;
@@ -19,6 +22,7 @@ export const Slide: FC<SlideProps> = (props) => {
   const {
     current,
     index,
+    length,
     transitionSpeed,
     scaleOnHover,
     onUpdate,
@@ -27,31 +31,55 @@ export const Slide: FC<SlideProps> = (props) => {
     children,
   } = props;
   const [direction, setDirection] = useState<Direction>(1);
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+
+  const setNewDirection = (newDirection) => {
+    console.log('new Direction', newDirection);
+    setDirection(newDirection);
+  };
+
+  useEffect(() => {
+    if (current === 0) setNewDirection(1);
+    if (current === length - 1) setNewDirection(-1);
+  }, [current, length]);
 
   const variants = {
     enter: (direction: number) => {
+      console.log('enter', direction);
+
       return {
         zIndex: 1,
-        x: direction * current * width,
+        x: direction * 1000,
+        opacity: 0,
       };
     },
     center: {
       zIndex: 1,
-      x: (index - current) * width,
+      x: 0,
+      opacity: 1,
     },
     exit: (direction: number) => {
+      console.log('exit', direction);
+
       return {
         zIndex: -1,
-        x: direction * current * width,
+        x: direction * 1000,
+        opacity: 0,
       };
     },
   };
 
-  const paginate = (newDirection: Direction) => {
+  const handleDrag = (newDirection: Direction) => {
     const newPage = index + newDirection;
-    setDirection(newDirection);
-    onUpdate(newPage);
+    setNewDirection(-newDirection);
+    onUpdate && onUpdate(newPage);
+  };
+
+  /**
+   * A value between 100 and 300 with logarithmic progression
+   * @param x reference Value
+   */
+  const getStiffness = (x) => {
+    return clamp(Math.log(x) + 1, 1, 3) * 100;
   };
 
   /**
@@ -66,44 +94,45 @@ export const Slide: FC<SlideProps> = (props) => {
   };
 
   return (
-    <motion.div
-      ref={ref}
-      layout
-      className='g-slim__slide absolute pin w-full grid place-center'
-      whileHover={{ scale: scaleOnHover }}
-      drag='x'
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={1}
-      dragMomentum={false}
-      initial='enter'
-      animate='center'
-      exit='exit'
-      custom={direction}
-      variants={variants}
-      transition={{
-        x: {
-          type: 'spring',
-          stiffness: 300,
-          damping: 25,
-          duration: transitionSpeed * 1000,
-        },
-      }}
-      onDragEnd={(e, { offset, velocity }) => {
-        const swipe = swipePower(offset.x, velocity.x);
+    current === index && (
+      <motion.div
+        layout
+        className='g-slim__slide absolute pin w-full grid place-center'
+        whileHover={{ scale: scaleOnHover }}
+        custom={direction}
+        variants={variants}
+        transition={{
+          x: {
+            type: 'spring',
+            stiffness: getStiffness(transitionSpeed),
+            damping: 25,
+            duration: transitionSpeed / 1000,
+          },
+          opacity: { duration: 0.2 },
+        }}
+        initial='enter'
+        animate='center'
+        exit='exit'
+        drag='x'
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={1}
+        onDragStart={onDragStart}
+        onDragEnd={(e, { offset, velocity }) => {
+          const swipe = swipePower(offset.x, velocity.x);
 
-        if (swipe < -swipeConfidenceThreshold) {
-          paginate(1);
-        } else if (swipe > swipeConfidenceThreshold) {
-          paginate(-1);
-        }
-        onDragEnd && onDragEnd();
-      }}
-      onDragStart={onDragStart}
-    >
-      <div draggable='false' style={{ pointerEvents: 'none' }}>
-        {children}
-      </div>
-    </motion.div>
+          if (swipe < -swipeConfidenceThreshold) {
+            handleDrag(1);
+          } else if (swipe > swipeConfidenceThreshold) {
+            handleDrag(-1);
+          }
+          onDragEnd && onDragEnd();
+        }}
+      >
+        <div draggable='false' style={{ pointerEvents: 'none' }}>
+          {children}
+        </div>
+      </motion.div>
+    )
   );
 };
 

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { action } from '@storybook/addon-actions';
 import { Carousel, CarouselProps } from './Carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
+
+// these methods are only used to support the Storybook demos
+import { getRandomInNumericRange, getRandomListOfImages } from '../../tests/imageUtils';
 
 export default {
   title: 'Carousel',
@@ -12,30 +15,11 @@ export default {
   },
 } as Meta;
 
-const Image = (args) => <img {...args} loading='lazy' alt='' />;
-
-const getNImages = (n: number) => {
-  const listOfImages = Array(n)
-    .fill()
-    .map((_, i) => (
-      <Image
-        key={i}
-        src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
-      />
-    ));
-
-  return listOfImages;
-};
-
-const getRandomWidthFromBoundaries = (min, max) => {
-  return min + Math.floor(Math.random() * Math.floor(max));
-};
-
 const Template: Story<CarouselProps> = (args) => {
   const storyDebugOnChange = action(`Current index`);
   return (
     <Carousel onChange={storyDebugOnChange} {...args}>
-      {args.children || getNImages(5)}
+      {args.children || getRandomListOfImages(4)}
     </Carousel>
   );
 };
@@ -54,7 +38,7 @@ export const NoArrows = createStory({ showArrows: false });
 
 export const NoLoop = createStory({ shouldLoop: false });
 
-export const CustomButtonLabels = createStory({ nextLabel: '👉🏽', prevLabel: '👈🏽' });
+export const CustomArrowButtonLabels = createStory({ nextLabel: '👉🏽', prevLabel: '👈🏽' });
 
 const CustomButton = ({ label, direction, onClick }) => (
   <button
@@ -86,12 +70,28 @@ export const ConfigureAutoplayInterval = createStory({ interval: 1000 });
 
 export const ConfigureInitialIndex = createStory({ selectedItem: 2 });
 
-export const ImagesFromCDNWithRandomWidth = createStory({
-  children: ['software', 'development', 'imagination', 'creativity', 'art'].map((query, index) => (
-    <Image
-      key={index}
-      src={`https://source.unsplash.com/${getRandomWidthFromBoundaries(500, 1600)}x300/?${query}`}
-      style={{ objectFit: 'contain' }}
-    />
-  )),
+export const RandomImagesFromCDNWithRandomWidth = createStory({
+  children: getRandomListOfImages(15, getRandomInNumericRange(5, 16) * 100),
 });
+
+export const AddMoreImagesFromCDNDynamically: FC<CarouselProps> = (args) => {
+  const [images, setImages] = useState(getRandomListOfImages(2));
+
+  const addImage = () => {
+    setImages([...images, ...getRandomListOfImages(1)]);
+  };
+
+  const storyDebugOnChange = action(`Current index`);
+  return (
+    <div className='g-slim'>
+      <p className='primary--text'>Add more images dynamically</p>
+      <button type='button' onClick={addImage}>
+        Add images
+      </button>
+      <hr />
+      <Carousel onChange={storyDebugOnChange} {...args}>
+        {images}
+      </Carousel>
+    </div>
+  );
+};

@@ -6,8 +6,9 @@ import { AnimatePresence } from 'framer-motion';
 import useCarousel from '../../use/carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
-import { Slide } from '../Slide/Slide';
 import { ArrowButtons } from '../ArrowButtons/ArrowButtons';
+import { DotIndicators } from '../DotIndicators/DotIndicators';
+import { Slide } from '../Slide/Slide';
 
 export interface CarouselProps {
   prevLabel: string;
@@ -16,13 +17,15 @@ export interface CarouselProps {
   resumeLabel: string;
   transitionSpeed: number;
   scaleOnHover: number;
+  minHeight: string;
   autoPlay?: boolean;
   interval?: number;
   shouldLoop?: boolean;
   showArrows?: boolean;
   selectedItem?: number;
-  minHeight: string;
   CustomButtonComponent?: ElementType;
+  showIndicators?: boolean;
+  dotIndicatorsSize?: number;
   onChange?: (index: number) => void;
   children?: React.ReactNode[];
   className?: string;
@@ -36,28 +39,31 @@ export type Direction = 1 | -1;
  */
 export const Carousel: FC<CarouselProps> = (props) => {
   const {
-    showArrows,
     prevLabel,
     nextLabel,
     pauseLabel,
     resumeLabel,
-    selectedItem,
-    shouldLoop,
-    autoPlay,
-    interval,
     transitionSpeed,
     scaleOnHover,
+    autoPlay,
+    interval,
+    shouldLoop,
+    showArrows,
+    selectedItem,
     minHeight,
     CustomButtonComponent,
+    showIndicators,
+    dotIndicatorsSize,
     onChange,
     children,
     className,
   } = props;
   const length = children?.length || 1;
 
+  const carousel = useCarousel({ length, shouldLoop });
+
   const [isRunning, setIsRunning] = useRafState(true);
   const [current, setCurrent] = useRafState<number>(selectedItem || 0);
-  const [carousel] = useCarousel({ length, shouldLoop });
 
   const updateCurrent = (index: number): void => {
     setCurrent(index);
@@ -82,10 +88,11 @@ export const Carousel: FC<CarouselProps> = (props) => {
     carousel.previous();
     updateCurrent(carousel.current);
   };
-  const handleChildrenUpdate = (targetIndex) => {
-    carousel.goTo(targetIndex);
+  const handlePageChange = (newPage: number) => {
+    carousel.goTo(newPage);
     updateCurrent(carousel.current);
   };
+
   const pause = () => {
     setIsRunning(false);
   };
@@ -106,7 +113,7 @@ export const Carousel: FC<CarouselProps> = (props) => {
       <div className='wrapper relative' style={styles} {...pauseOnHover}>
         {/* <h1 className='primary--text'>{current}</h1> */}
         <div className='g-slim__carousel overflow-hidden w-full absolute pin grid place-center'>
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {children &&
               children.map((el, i) => {
                 return (
@@ -114,11 +121,12 @@ export const Carousel: FC<CarouselProps> = (props) => {
                     key={i}
                     current={current}
                     index={i}
+                    length={length}
                     transitionSpeed={transitionSpeed}
                     scaleOnHover={scaleOnHover}
-                    onUpdate={handleChildrenUpdate}
-                    onDragStart={() => pause()}
-                    onDragEnd={() => resume()}
+                    onUpdate={handlePageChange}
+                    onDragStart={pause}
+                    onDragEnd={resume}
                   >
                     {el}
                   </Slide>
@@ -136,8 +144,8 @@ export const Carousel: FC<CarouselProps> = (props) => {
           />
         )}
       </div>
-      {autoPlay && (
-        <div className='grid place-center g-slim__pause'>
+      <div className='grid place-center g-slim__pause'>
+        {autoPlay && (
           <button
             type='button'
             onClick={isRunning ? pause : resume}
@@ -145,8 +153,17 @@ export const Carousel: FC<CarouselProps> = (props) => {
           >
             {isRunning ? pauseLabel : resumeLabel}
           </button>
-        </div>
-      )}
+        )}
+        {showIndicators && (
+          <DotIndicators
+            current={current}
+            numberOfDots={length}
+            dotSize={dotIndicatorsSize}
+            transitionSpeed={transitionSpeed}
+            onDotClicked={handlePageChange}
+          />
+        )}
+      </div>
     </div>
   );
 };

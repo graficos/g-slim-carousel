@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useMeasure } from 'react-use';
+import { motion } from 'framer-motion';
 
 import './DotIndicators.scss';
 
@@ -28,7 +29,7 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
   });
 
   return (
-    <div className='relative g-slim__dot-indicators'>
+    <div className='g-slim__dot-indicators relative'>
       {Array(numberOfDots)
         .fill('')
         .map((_, index) => (
@@ -61,16 +62,18 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
             </svg>
           </button>
         ))}
-      <svg
+      <motion.svg
+        layout
         aria-hidden
         className='absolute z-0'
         xmlns='http://www.w3.org/2000/svg'
         viewBox={`0 0 ${dotSize} ${dotSize}`}
         style={{
-          transformOrigin: 'center',
-          left: (innerDotPosition || 0) + 'px',
           pointerEvents: 'none',
+          left: 0,
         }}
+        animate={{ x: innerDotPosition }}
+        transition={{ duration: transitionSpeed / 3000 }}
         width={dotSize}
       >
         <circle
@@ -81,7 +84,7 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
           r={dotSize * 0.2}
           style={{ transition: 'fill ' + transitionSpeed + 'ms' }}
         />
-      </svg>
+      </motion.svg>
     </div>
   );
 };
