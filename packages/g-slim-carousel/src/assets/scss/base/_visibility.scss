@@ -1,3 +1,17 @@
 .overflow-hidden {
   overflow: hidden;
 }
+/**
+ * Visually hide an element, but leave it available for screen readers
+ * @link https://www.w3.org/WAI/tutorials/stylesheets/wai-act-fe16f41e.css
+ */
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

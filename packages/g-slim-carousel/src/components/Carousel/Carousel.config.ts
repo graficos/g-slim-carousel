@@ -3,6 +3,7 @@ export const DEFAULT_OPTIONS = {
   nextLabel: 'Next',
   pauseLabel: 'Pause',
   resumeLabel: 'Resume',
+  goToLabel: 'Go to',
   transitionSpeed: 600,
   scaleOnHover: 1.1,
   autoPlay: true,

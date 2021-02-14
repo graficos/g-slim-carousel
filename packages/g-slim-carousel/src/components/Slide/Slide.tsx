@@ -1,15 +1,16 @@
-import React, { FC, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { FC, useState } from 'react';
+import classNames from 'classnames';
+import { motion, Point2D } from 'framer-motion';
 
-import { Direction } from '../Carousel/Carousel';
+import { Direction } from '../../types';
+
+import { getSwipeDirectionHorizontal, getStiffness } from '../../core/draggingPhysics';
 
 import './Slide.scss';
-import { clamp } from '../../utils/clamp';
 
 export interface SlideProps {
   current: number;
   index: number;
-  length: number;
   transitionSpeed: number;
   scaleOnHover: number;
   onDragStart: () => void;
@@ -22,7 +23,6 @@ export const Slide: FC<SlideProps> = (props) => {
   const {
     current,
     index,
-    length,
     transitionSpeed,
     scaleOnHover,
     onUpdate,
@@ -32,23 +32,16 @@ export const Slide: FC<SlideProps> = (props) => {
   } = props;
   const [direction, setDirection] = useState<Direction>(1);
 
-  const setNewDirection = (newDirection) => {
-    console.log('new Direction', newDirection);
-    setDirection(newDirection);
-  };
-
-  useEffect(() => {
-    if (current === 0) setNewDirection(1);
-    if (current === length - 1) setNewDirection(-1);
-  }, [current, length]);
+  const isImage = children && children.type === 'img';
+  const disableDragOnImageElementChildren = isImage ? { style: { pointerEvents: 'none' } } : {};
 
   const variants = {
-    enter: (direction: number) => {
-      console.log('enter', direction);
+    enter: (direction: Direction) => {
+      console.log('appearFrom', direction);
 
       return {
         zIndex: 1,
-        x: direction * 1000,
+        x: direction > 0 ? 1000 : -1000,
         opacity: 0,
       };
     },
@@ -57,47 +50,32 @@ export const Slide: FC<SlideProps> = (props) => {
       x: 0,
       opacity: 1,
     },
-    exit: (direction: number) => {
+    exit: (direction: Direction) => {
       console.log('exit', direction);
-
       return {
         zIndex: -1,
-        x: direction * 1000,
+        x: direction < 0 ? 1000 : -1000,
         opacity: 0,
       };
     },
   };
 
-  const handleDrag = (newDirection: Direction) => {
-    const newPage = index + newDirection;
-    setNewDirection(-newDirection);
+  const handleDrag = (velocity: Point2D) => {
+    const swipeDirection = getSwipeDirectionHorizontal(velocity);
+    setDirection(swipeDirection);
+    const newPage = index * swipeDirection + 1;
     onUpdate && onUpdate(newPage);
   };
 
-  /**
-   * A value between 100 and 300 with logarithmic progression
-   * @param x reference Value
-   */
-  const getStiffness = (x) => {
-    return clamp(Math.log(x) + 1, 1, 3) * 100;
-  };
-
-  /**
-   * Experimenting with distilling swipe offset and velocity into a single variable, so the
-   * less distance a user has swiped, the more velocity they need to register as a swipe.
-   * Should accomodate longer swipes and short flicks without having binary checks on
-   * just distance thresholds and velocity > 0.
-   */
-  const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
-  };
+  const classes = classNames('g-slim__slide absolute pin w-full grid place-center', {
+    'g-slim__slide--image': isImage,
+  });
 
   return (
     current === index && (
       <motion.div
         layout
-        className='g-slim__slide absolute pin w-full grid place-center'
+        className={classes}
         whileHover={{ scale: scaleOnHover }}
         custom={direction}
         variants={variants}
@@ -112,23 +90,17 @@ export const Slide: FC<SlideProps> = (props) => {
         }}
         initial='enter'
         animate='center'
-        exit='exit'
+        exit='exit' // https://www.framer.com/api/motion/animate-presence/#animating-custom-components
         drag='x'
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={1}
         onDragStart={onDragStart}
-        onDragEnd={(e, { offset, velocity }) => {
-          const swipe = swipePower(offset.x, velocity.x);
-
-          if (swipe < -swipeConfidenceThreshold) {
-            handleDrag(1);
-          } else if (swipe > swipeConfidenceThreshold) {
-            handleDrag(-1);
-          }
+        onDragEnd={(e, { velocity }) => {
+          handleDrag(velocity);
           onDragEnd && onDragEnd();
         }}
       >
-        <div draggable='false' style={{ pointerEvents: 'none' }}>
+        <div draggable='false' {...disableDragOnImageElementChildren}>
           {children}
         </div>
       </motion.div>

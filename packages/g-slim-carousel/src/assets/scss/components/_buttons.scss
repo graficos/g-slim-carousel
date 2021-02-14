@@ -1,6 +1,9 @@
-.reset-button {
+.button {
   padding: 0;
   border: none;
   outline: none;
   background: transparent;
+  &:focus {
+    outline: 2px solid getColorFromTheme(accent);
+  }
 }

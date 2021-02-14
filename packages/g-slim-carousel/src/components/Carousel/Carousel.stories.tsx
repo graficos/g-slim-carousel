@@ -5,7 +5,11 @@ import { Carousel, CarouselProps } from './Carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
 // these methods are only used to support the Storybook demos
-import { getRandomInNumericRange, getRandomListOfImages } from '../../tests/imageUtils';
+import {
+  getImageSource,
+  getRandomInNumericRange,
+  getRandomListOfImages,
+} from '../../tests/imageUtils';
 
 export default {
   title: 'Carousel',
@@ -19,7 +23,7 @@ const Template: Story<CarouselProps> = (args) => {
   const storyDebugOnChange = action(`Current index`);
   return (
     <Carousel onChange={storyDebugOnChange} {...args}>
-      {args.children || getRandomListOfImages(4)}
+      {args.children || getRandomListOfImages({ numberOfImages: 4 })}
     </Carousel>
   );
 };
@@ -40,9 +44,8 @@ export const NoLoop = createStory({ shouldLoop: false });
 
 export const CustomArrowButtonLabels = createStory({ nextLabel: '👉🏽', prevLabel: '👈🏽' });
 
-const CustomButton = ({ label, direction, onClick }) => (
+const CustomArrowButton = ({ label, direction, onClick }) => (
   <button
-    aria-label={label}
     style={{
       transform: direction < 0 ? 'scale(-1)' : 'none',
       color: 'white',
@@ -56,12 +59,13 @@ const CustomButton = ({ label, direction, onClick }) => (
     }}
     onClick={onClick}
   >
+    <span className='visually-hidden'>{label}</span>
     &gt;
   </button>
 );
 
-export const CustomButtonComponent = createStory({
-  CustomButtonComponent: CustomButton,
+export const CustomArrowButtonComponent = createStory({
+  CustomArrowButtonComponent: CustomArrowButton,
 });
 
 export const ConfigureTransitionSpeed = createStory({ transitionSpeed: 120 });
@@ -71,14 +75,17 @@ export const ConfigureAutoplayInterval = createStory({ interval: 1000 });
 export const ConfigureInitialIndex = createStory({ selectedItem: 2 });
 
 export const RandomImagesFromCDNWithRandomWidth = createStory({
-  children: getRandomListOfImages(15, getRandomInNumericRange(5, 16) * 100),
+  children: getRandomListOfImages({
+    numberOfImages: 15,
+    width: getRandomInNumericRange(5, 16) * 100,
+  }),
 });
 
 export const AddMoreImagesFromCDNDynamically: FC<CarouselProps> = (args) => {
-  const [images, setImages] = useState(getRandomListOfImages(2));
+  const [images, setImages] = useState(getRandomListOfImages({ numberOfImages: 2 }));
 
   const addImage = () => {
-    setImages([...images, ...getRandomListOfImages(1)]);
+    setImages([...images, ...getRandomListOfImages({ numberOfImages: 1 })]);
   };
 
   const storyDebugOnChange = action(`Current index`);
@@ -91,6 +98,64 @@ export const AddMoreImagesFromCDNDynamically: FC<CarouselProps> = (args) => {
       <hr />
       <Carousel onChange={storyDebugOnChange} {...args}>
         {images}
+      </Carousel>
+    </div>
+  );
+};
+
+const StaticContent = ({ onButtonClick, index }) => {
+  const backgroundImage = `url(${getImageSource({ width: 1600, height: 400, index })})`;
+  return (
+    <div
+      className='absolute pin grid place-center'
+      style={{
+        backgroundImage,
+        backgroundSize: 'cover',
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: 'sans-serif',
+          color: '#fff',
+          textShadow: '0 0 7px rgba(0 0 0 / 50%)',
+        }}
+      >
+        Hi, this is some text content
+      </h2>
+      <button
+        type='button'
+        className='button primary'
+        style={{
+          color: '#FFF',
+          fontWeight: 'bold',
+          fontSize: '2rem',
+          backgroundColor: 'rgba(0 0 0 / 30%)',
+          padding: '.2em .7em',
+          borderRadius: '10px',
+        }}
+        onClick={onButtonClick}
+      >
+        Click me, I&apos;m a button
+      </button>
+    </div>
+  );
+};
+
+export const InteractiveContent: FC<CarouselProps> = (args) => {
+  const onClick = () => {
+    alert('hi 👋🏽');
+  };
+
+  const storyDebugOnChange = action(`Current index`);
+
+  return (
+    <div className='g-slim'>
+      <Carousel onChange={storyDebugOnChange} {...args}>
+        <StaticContent index={5} onButtonClick={onClick} />
+        {getRandomListOfImages({
+          numberOfImages: 1,
+        })}
+        <StaticContent index={8} onButtonClick={onClick} />
       </Carousel>
     </div>
   );

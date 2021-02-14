@@ -1,4 +1,4 @@
-import React, { ElementType, FC } from 'react';
+import React, { Children, ElementType, FC } from 'react';
 import classNames from 'classnames';
 import { useInterval, useRafState } from 'react-use';
 import { AnimatePresence } from 'framer-motion';
@@ -9,15 +9,19 @@ import { DEFAULT_OPTIONS } from './Carousel.config';
 import { ArrowButtons } from '../ArrowButtons/ArrowButtons';
 import { DotIndicators } from '../DotIndicators/DotIndicators';
 import { Slide } from '../Slide/Slide';
+import { PauseButton } from '../PauseButton/PauseButton';
+
+import './Carousel.scss';
 
 export interface CarouselProps {
-  prevLabel: string;
-  nextLabel: string;
-  pauseLabel: string;
-  resumeLabel: string;
-  transitionSpeed: number;
-  scaleOnHover: number;
   minHeight: string;
+  prevLabel?: string;
+  nextLabel?: string;
+  pauseLabel?: string;
+  resumeLabel?: string;
+  goToLabel?: string;
+  transitionSpeed?: number;
+  scaleOnHover?: number;
   autoPlay?: boolean;
   interval?: number;
   shouldLoop?: boolean;
@@ -30,9 +34,6 @@ export interface CarouselProps {
   children?: React.ReactNode[];
   className?: string;
 }
-
-export type Direction = 1 | -1;
-
 /**
  * G Slimg Carousel
  * @see https://www.w3.org/WAI/tutorials/carousels/
@@ -43,6 +44,7 @@ export const Carousel: FC<CarouselProps> = (props) => {
     nextLabel,
     pauseLabel,
     resumeLabel,
+    goToLabel,
     transitionSpeed,
     scaleOnHover,
     autoPlay,
@@ -115,13 +117,12 @@ export const Carousel: FC<CarouselProps> = (props) => {
         <div className='g-slim__carousel overflow-hidden w-full absolute pin grid place-center'>
           <AnimatePresence initial={false}>
             {children &&
-              children.map((el, i) => {
+              Children.map(children, (el, i) => {
                 return (
                   <Slide
                     key={i}
                     current={current}
                     index={i}
-                    length={length}
                     transitionSpeed={transitionSpeed}
                     scaleOnHover={scaleOnHover}
                     onUpdate={handlePageChange}
@@ -144,21 +145,21 @@ export const Carousel: FC<CarouselProps> = (props) => {
           />
         )}
       </div>
-      <div className='grid place-center g-slim__pause'>
+      <div className='flex place-center g-slim__controls'>
         {autoPlay && (
-          <button
-            type='button'
-            onClick={isRunning ? pause : resume}
-            className='g-slim__pause__button'
-          >
-            {isRunning ? pauseLabel : resumeLabel}
-          </button>
+          <PauseButton
+            isRunning={isRunning}
+            pauseLabel={pauseLabel}
+            resumeLabel={resumeLabel}
+            onButtonClick={isRunning ? pause : resume}
+          />
         )}
         {showIndicators && (
           <DotIndicators
             current={current}
             numberOfDots={length}
             dotSize={dotIndicatorsSize}
+            goToLabel={goToLabel}
             transitionSpeed={transitionSpeed}
             onDotClicked={handlePageChange}
           />
