@@ -1,11 +1,11 @@
-import { clamp } from '../utils/clamp';
+import { clamp, reverseClamp } from '../utils/clamp';
 import { CarouselServiceOptions } from './types';
 
 export class CarouselService {
-  private index = 0;
-  private length: CarouselServiceOptions['length'];
-  private shouldLoop: CarouselServiceOptions['shouldLoop'];
-  private callback: CarouselServiceOptions['callback'];
+  private _index = 0;
+  private _length: CarouselServiceOptions['length'];
+  private _shouldLoop: CarouselServiceOptions['shouldLoop'];
+  private _callback: CarouselServiceOptions['callback'];
 
   constructor(
     { length = 0, index = 0, shouldLoop = true, callback }: CarouselServiceOptions = {
@@ -14,52 +14,38 @@ export class CarouselService {
       callback: () => {},
     }
   ) {
-    this.length = length;
-    this.index = index < length - 1 ? index : length - 1;
-    this.shouldLoop = shouldLoop;
-    this.callback = callback;
+    this._length = length;
+    this._index = index < length - 1 ? index : length - 1;
+    this._shouldLoop = shouldLoop;
+    this._callback = callback;
   }
   get current(): number {
-    return this.index;
+    return this._index;
   }
   set current(val: number) {
-    this.index = val;
-  }
-
-  private get isNextPossible() {
-    return this.index < this.length - 1;
-  }
-
-  private get isPreviousPossible() {
-    return this.index > 0;
+    this._index = val;
   }
 
   next(): void {
-    if (this.isNextPossible) {
-      this.current = this.index + 1;
-    } else if (this.shouldLoop) {
-      this.current = 0;
-    }
-    this.notify();
+    this.goTo(this._index + 1);
   }
 
   previous(): void {
-    if (this.isPreviousPossible) {
-      this.index -= 1;
-    } else if (this.shouldLoop) {
-      this.index = this.length - 1;
-    }
-    this.notify();
+    this.goTo(this._index - 1);
   }
 
-  goTo(index: number): void {
-    if (index !== this.current) {
-      this.current = clamp(index, 0, this.length - 1);
+  goTo(newCurrent: number): void {
+    if (newCurrent !== this.current) {
+      if (!this._shouldLoop) {
+        this._index = clamp(newCurrent, 0, this._length - 1);
+      } else {
+        this._index = reverseClamp(newCurrent, 0, this._length - 1);
+      }
     }
     this.notify();
   }
 
   private notify() {
-    this.callback && this.callback(this.current);
+    this._callback && this._callback(this.current);
   }
 }

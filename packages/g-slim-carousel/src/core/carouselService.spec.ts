@@ -96,6 +96,14 @@ describe('CarouselService', () => {
     const carousel = new CarouselService({ length: 5 });
     // act
     carousel.goTo(2);
+    // assert
+    expect(carousel.current).toBe(2);
+  });
+  it('goTo is idempotent', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5 });
+    // act
+    carousel.goTo(2);
     carousel.goTo(2); // idempotent operation
     // assert
     expect(carousel.current).toBe(2);
@@ -113,20 +121,44 @@ describe('CarouselService', () => {
     expect(mockFn).toHaveBeenNthCalledWith(2, 0);
     expect(mockFn).toHaveBeenNthCalledWith(3, 3);
   });
-  it('handles values higher than range', () => {
+  it('handles values higher than range within range, no loop', () => {
     // arrange
-    const carousel = new CarouselService({ length: 5 });
+    const carousel = new CarouselService({ length: 5, shouldLoop: false });
     // act
     carousel.goTo(10);
     // assert
     expect(carousel.current).toBe(4);
   });
-  it('handles values lower than 0', () => {
+  it('handles values lower than 0 within range, no loop', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5, shouldLoop: false });
+    // act
+    carousel.goTo(-10);
+    // assert
+    expect(carousel.current).toBe(0);
+  });
+  it('handles values higher than range, looping over the range', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5 });
+    // act
+    carousel.goTo(10);
+    // assert
+    expect(carousel.current).toBe(0);
+  });
+  it('handles values lower than 0, looping over the range', () => {
     // arrange
     const carousel = new CarouselService({ length: 5 });
     // act
     carousel.goTo(-10);
     // assert
-    expect(carousel.current).toBe(0);
+    expect(carousel.current).toBe(4);
+  });
+  it('handles values lower than 0 with `shouldLoop`', () => {
+    // arrange
+    const carousel = new CarouselService({ length: 5 });
+    // act
+    carousel.previous();
+    // assert
+    expect(carousel.current).toBe(4);
   });
 });
