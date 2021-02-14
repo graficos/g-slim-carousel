@@ -3,14 +3,12 @@
 .g-slim__arrow {
   top: 50%;
   transform: translateY(-50%);
-  button {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    border: none;
-    outline: none;
-    background-color: white;
-  }
+}
+:root .g-slim__arrow__button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: white;
 }
 .g-slim__arrow--prev {
   left: $arrows-horizontal-bleed;

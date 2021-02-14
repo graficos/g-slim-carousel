@@ -3,19 +3,26 @@ import classNames from 'classnames';
 import { useMeasure } from 'react-use';
 import { motion } from 'framer-motion';
 
-import './DotIndicators.scss';
-
 export interface DotIndicatorsProps {
   current: number;
   onDotClicked: (index: number) => void;
   numberOfDots: number;
   dotSize: number;
   transitionSpeed: number;
+  goToLabel: string;
   disabled?: boolean;
 }
 
 export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
-  const { current, onDotClicked, numberOfDots, disabled, dotSize, transitionSpeed } = props;
+  const {
+    current,
+    onDotClicked,
+    numberOfDots,
+    disabled,
+    dotSize,
+    goToLabel,
+    transitionSpeed,
+  } = props;
   const [innerDotPosition, setInnerDotPosition] = useState(0);
   const [ref, { width }] = useMeasure<HTMLElement & SVGSVGElement>();
 
@@ -36,15 +43,18 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
           <button
             key={index}
             type='button'
-            aria-label={`Go to ${index}`}
-            className='dot-indicators__button reset-button'
+            className='dot-indicators__button button inline-block '
             onClick={() => onDotClicked(index)}
           >
             {index === 0 && <div ref={ref}>{/* Width reference for buttons */}</div>}
+            <span className='visually-hidden'>
+              {goToLabel} {index}
+            </span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox={`0 0 ${dotSize} ${dotSize}`}
               width={dotSize}
+              className='block'
             >
               <title>
                 {index + 1} / {numberOfDots}
@@ -85,6 +95,9 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
           style={{ transition: 'fill ' + transitionSpeed + 'ms' }}
         />
       </motion.svg>
+      <div aria-live='polite' aria-atomic='true' className='liveregion visually-hidden'>
+        Item {current} of {length}
+      </div>
     </div>
   );
 };

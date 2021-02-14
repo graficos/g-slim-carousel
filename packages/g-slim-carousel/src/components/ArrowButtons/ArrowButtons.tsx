@@ -21,7 +21,7 @@ export const ArrowButtons: FC<ArrowButtonsProps> = (props) => {
         ) : (
           <button
             type='button'
-            className='grid place-center'
+            className='g-slim__arrow__button grid place-center button'
             title={prevLabel}
             onClick={handlePrevious}
           >
@@ -35,7 +35,7 @@ export const ArrowButtons: FC<ArrowButtonsProps> = (props) => {
         ) : (
           <button
             type='button'
-            className='grid place-center'
+            className='g-slim__arrow__button grid place-center button'
             title={nextLabel}
             onClick={handleNext}
           >
