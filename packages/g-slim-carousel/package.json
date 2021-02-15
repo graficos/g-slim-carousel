@@ -1,5 +1,5 @@
 {
-  "name": "g-slim-carousel",
+  "name": "@graficos/g-slim-carousel",
   "version": "0.0.1-alpha.0",
   "description": "G Slim Carousel. A simple carousel for your React projects",
   "author": "gangsthub <paulmelero@gmail.com>",
@@ -14,7 +14,11 @@
     "access": "public",
     "registry": "https://npm.pkg.github.com/"
   },
-  "repository": "graficos-net/g-slim-carousel",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/graficos/g-slim-carousel",
+    "directory": "packages/g-slim-carousel"
+  },
   "scripts": {
     "test": "jest",
     "test:watch": "yarn test --watch",
