@@ -11,7 +11,7 @@
   },
   "scripts": {
     "diff": "lerna diff",
-    "status": "lerna change",
+    "status": "lerna changed",
     "publish": "lerna publish"
   }
 }
