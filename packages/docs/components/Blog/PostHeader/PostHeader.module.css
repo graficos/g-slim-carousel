@@ -1,19 +1,18 @@
 .title {
-  font-size: 1.5rem;
   font-weight: 700;
-  color: #f39c12;
+  color: #ffffff;
 }
 .blogTitle {
-  font-size: 2rem;
+  text-shadow: 0 0 7px rgba(0 0 0 / 80%);
 }
 .details {
-  margin-bottom: 1rem;
   border-bottom: 1px solid #eaeaea;
-  padding-bottom: 1rem;
-  width: 100%;
 }
 .bgImage {
-  background-size: cover;
   min-height: 300px;
-  width: 100%;
+  background-size: cover;
+  background-color: rgba(0 0 0 / 50%);
+}
+.minHeightHeader {
+  min-height: 300px;
 }
