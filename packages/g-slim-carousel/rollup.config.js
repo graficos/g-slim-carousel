@@ -12,12 +12,12 @@ export default {
   external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   output: [
     {
-      file: `./dist/${pkg.module}`,
+      file: `./${pkg.module}`,
       format: 'es',
       sourcemap: true,
     },
     {
-      file: `./dist/${pkg.main}`,
+      file: `./${pkg.main}`,
       format: 'cjs',
       sourcemap: true,
     },
@@ -58,6 +58,7 @@ export default {
           src: 'package.json',
           dest: 'dist',
           transform: (content) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { scripts, devDependencies, husky, release, engines, ...keep } = JSON.parse(
               content.toString()
             );

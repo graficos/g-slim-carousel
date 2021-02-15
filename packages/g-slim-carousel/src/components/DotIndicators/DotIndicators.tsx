@@ -9,9 +9,11 @@ export interface DotIndicatorsProps {
   numberOfDots: number;
   dotSize: number;
   transitionSpeed: number;
-  goToLabel: string;
+  goToLabel?: string;
   disabled?: boolean;
 }
+
+export const DEFAULT_OPTIONS = { dotSize: 28 };
 
 export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
   const {
@@ -19,12 +21,12 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
     onDotClicked,
     numberOfDots,
     disabled,
-    dotSize,
+    dotSize = DEFAULT_OPTIONS.dotSize,
     goToLabel,
     transitionSpeed,
   } = props;
   const [innerDotPosition, setInnerDotPosition] = useState(0);
-  const [ref, { width }] = useMeasure<HTMLElement & SVGSVGElement>();
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   useEffect(() => {
     setInnerDotPosition(width * current);
@@ -102,6 +104,4 @@ export const DotIndicators: FC<DotIndicatorsProps> = (props) => {
   );
 };
 
-DotIndicators.defaultProps = {
-  dotSize: 28,
-};
+DotIndicators.defaultProps = DEFAULT_OPTIONS;

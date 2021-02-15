@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import classNames from 'classnames';
 
 export interface ArrowProps {
-  label: string;
+  label?: string;
   direction?: number | 'top' | 'bottom';
   disabled?: boolean;
 }

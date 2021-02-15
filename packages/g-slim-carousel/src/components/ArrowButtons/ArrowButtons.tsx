@@ -5,10 +5,10 @@ import { Arrow } from '../Arrow/Arrow';
 import './ArrowButtons.scss';
 
 export interface ArrowButtonsProps {
-  prevLabel: string;
   handlePrevious: () => void;
-  nextLabel: string;
   handleNext: () => void;
+  prevLabel?: string;
+  nextLabel?: string;
   CustomButtonComponent?: ElementType;
 }
 

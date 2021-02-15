@@ -4,8 +4,8 @@ import './PauseButton.scss';
 
 export interface PauseButtonProps {
   isRunning: boolean;
-  pauseLabel: string;
-  resumeLabel: string;
+  pauseLabel?: string;
+  resumeLabel?: string;
   onButtonClick: () => void;
 }
 

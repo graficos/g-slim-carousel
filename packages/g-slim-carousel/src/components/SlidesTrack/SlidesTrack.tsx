@@ -11,11 +11,11 @@ import { APPEARS_FROM_THE_RIGHT } from '../../core/constants';
 
 export interface SlidesTrackProps {
   current: number;
-  transitionSpeed: number;
-  scaleOnHover: number;
   onDragStart: () => void;
   onDragEnd: () => void;
   onUpdate: (newPage: number) => void;
+  transitionSpeed?: number;
+  scaleOnHover?: number;
   children?: React.ReactNode;
 }
 
