@@ -3,10 +3,11 @@
 }
 
 .slide__item-wrapper {
-  // prevents default behaviour on images dragging
-  // assumming only images are passed
-  pointer-events: none;
+  cursor: grab;
   img {
+    // prevents default behaviour on images dragging
+    // assumming only images are passed
+    pointer-events: none;
     display: block;
   }
 }

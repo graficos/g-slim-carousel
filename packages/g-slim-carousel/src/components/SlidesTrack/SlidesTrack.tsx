@@ -1,12 +1,13 @@
 import React, { FC, useState } from 'react';
-import classNames from 'classnames';
-import { AnimatePresence, motion, Point2D } from 'framer-motion';
+import { AnimatePresence, AnimationProps, motion, Point2D } from 'framer-motion';
 
 import { Direction } from '../../types';
 
-import { getSwipeDirectionHorizontal, getStiffness } from '../../core/draggingPhysics';
+import { getAppearDirectionX, getStiffness, getNewPage } from '../../core/draggingPhysics';
+import { negateValue } from '../../core/arythmetics';
 
 import './SlidesTrack.scss';
+import { APPEARS_FROM_THE_RIGHT } from '../../core/constants';
 
 export interface SlidesTrackProps {
   current: number;
@@ -18,65 +19,60 @@ export interface SlidesTrackProps {
   children?: React.ReactNode;
 }
 
-const variants = {
-  enter: (direction: Direction) => {
-    console.log('enter', direction);
-
-    return {
-      zIndex: 1,
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    };
-  },
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: Direction) => {
-    console.log('exit', direction);
-    return {
-      zIndex: -1,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    };
-  },
-};
-
 export const SlidesTrack: FC<SlidesTrackProps> = (props) => {
   const {
     current,
     transitionSpeed,
     scaleOnHover,
     onUpdate,
-    onDragStart,
     onDragEnd,
+    onDragStart,
     children,
   } = props;
 
-  const transitionConfiguration = {
+  const transitionConfiguration: AnimationProps['transition'] = {
     x: {
       type: 'spring',
       stiffness: getStiffness(transitionSpeed),
       damping: 25,
-      duration: transitionSpeed / 1000,
     },
     opacity: { duration: 0.2 },
   };
 
-  const [direction, setDirection] = useState<Direction>(1);
+  const [appearDirection, setAppearDirection] = useState<Direction>(APPEARS_FROM_THE_RIGHT);
 
   const handleDrag = (index, velocity: Point2D) => {
-    const swipeDirection = getSwipeDirectionHorizontal(velocity);
-    const newPage = index * swipeDirection + 1;
-    setDirection(swipeDirection);
+    const appearDirection = getAppearDirectionX(velocity);
+    const newPage = getNewPage(index, appearDirection);
+    setAppearDirection(appearDirection as Direction);
     onUpdate && onUpdate(newPage);
   };
 
-  const classes = classNames('g-slim__slide absolute pin w-full grid place-center');
+  const variants = {
+    enter: () => {
+      console.log({ current, appearDirection });
+      return {
+        zIndex: 1,
+        x: appearDirection * 600, // 600 is the distance in pixels on enter
+        opacity: 0,
+      };
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: () => {
+      return {
+        zIndex: -1,
+        x: negateValue(appearDirection) * 1000, // 1000 is the distance in pixels on exit
+        opacity: 0,
+      };
+    },
+  };
 
   return (
-    <AnimatePresence initial={false} custom={direction} exitBeforeEnter>
+    <AnimatePresence initial={false}>
       {children &&
         React.Children.map(children, (el, index) => {
           return (
@@ -84,14 +80,13 @@ export const SlidesTrack: FC<SlidesTrackProps> = (props) => {
               <motion.div
                 key={index}
                 layout
-                className={classes}
+                className='g-slim__slide absolute pin w-full grid place-center'
                 whileHover={{ scale: scaleOnHover }}
-                custom={direction}
                 variants={variants}
                 transition={transitionConfiguration}
                 initial='enter'
                 animate='center'
-                exit='exit' // https://www.framer.com/api/motion/animate-presence/#animating-custom-components
+                exit='exit' // only available with AnimatePresence
                 drag='x'
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={1}
@@ -101,9 +96,9 @@ export const SlidesTrack: FC<SlidesTrackProps> = (props) => {
                   onDragEnd && onDragEnd();
                 }}
               >
-                <div draggable='false' className='slide__item-wrapper'>
+                <motion.div layout className='slide__item-wrapper'>
                   {el}
-                </div>
+                </motion.div>
               </motion.div>
             )
           );

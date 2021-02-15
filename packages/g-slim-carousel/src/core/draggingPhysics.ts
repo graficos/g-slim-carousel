@@ -1,21 +1,23 @@
-import { AxisBox2D, Point2D } from 'framer-motion';
+import { AxisBox2D, Point2D, Spring } from 'framer-motion';
 
 import { Direction } from '../types';
 import { clamp } from '../utils/clamp';
 import { isMinusZero } from '../utils/isMinusZero';
+import { negateValue } from './arythmetics';
+import { LEFT, RIGHT } from './constants';
 
 /**
- * A value between 100 and 300 with linear progression
+ * An inverse linear progression
  * @param x reference Value
- * @see https://www.wolframalpha.com/input/?i=plot+%282+x%29%2F5+%2B+60+between+100+and+300
+ * @see https://www.wolframalpha.com/input/?i=Abs%28%285+x%29%2F2+-+150%29+between+100+and+300
  */
-export const getStiffness = (x: number): number => {
-  return clamp((2 * x) / 5 + 60, 100, 300);
+export const getStiffness = (x: Spring['stiffness']): number => {
+  return clamp(negateValue(x) + 700, 100, 600);
 };
 
 const getZerosDirection = (value: 0 | -0): Direction => {
-  if (isMinusZero(value)) return -1;
-  if (value === 0) return 1;
+  if (isMinusZero(value)) return LEFT;
+  if (value === 0) return RIGHT;
   return 1;
 };
 
@@ -25,7 +27,7 @@ const getZerosDirection = (value: 0 | -0): Direction => {
  * @param {Point2D} velocity
  * @param {AxisBox2D} axis 'x' or 'y'
  */
-export const getSwipeDirection = (velocity: Point2D, axis: keyof AxisBox2D): Direction => {
+export const getAppearDirection = (velocity: Point2D, axis: keyof AxisBox2D): Direction => {
   const value = velocity[axis];
 
   // Javascript, amerite!? ;P
@@ -33,12 +35,12 @@ export const getSwipeDirection = (velocity: Point2D, axis: keyof AxisBox2D): Dir
     return getZerosDirection(value);
   }
 
-  const swipeDirection = Math.sign(value);
+  const appearDirection = negateValue(Math.sign(value));
 
-  console.log({ swipeDirection });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return swipeDirection;
+  return appearDirection as Direction;
 };
 
-export const getSwipeDirectionHorizontal = (vel: Point2D): Direction => getSwipeDirection(vel, 'x');
+export const getAppearDirectionX = (vel: Point2D): Direction => getAppearDirection(vel, 'x');
+
+export const getNewPage = (index: number, appearDirection: Direction): number =>
+  index + appearDirection;

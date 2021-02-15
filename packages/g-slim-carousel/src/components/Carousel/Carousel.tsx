@@ -2,7 +2,7 @@ import React, { ElementType, FC } from 'react';
 import classNames from 'classnames';
 import { useInterval, useRafState } from 'react-use';
 
-import useCarousel from '../../use/carousel';
+import useCarousel from '../../hooks/useCarousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
 import { ArrowButtons } from '../ArrowButtons/ArrowButtons';
@@ -59,11 +59,12 @@ export const Carousel: FC<CarouselProps> = (props) => {
     children,
     className,
   } = props;
-  const length = children?.length || 1;
+  const length = React.Children.count(children) || 1;
 
   const carousel = useCarousel({ length, shouldLoop });
 
   const [isRunning, setIsRunning] = useRafState(true);
+
   const [current, setCurrent] = useRafState<number>(selectedItem || 0);
 
   const updateCurrent = (index: number): void => {
