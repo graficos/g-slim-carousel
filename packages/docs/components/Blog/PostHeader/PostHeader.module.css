@@ -1,0 +1,19 @@
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f39c12;
+}
+.blogTitle {
+  font-size: 2rem;
+}
+.details {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+.bgImage {
+  background-size: cover;
+  min-height: 300px;
+  width: 100%;
+}
