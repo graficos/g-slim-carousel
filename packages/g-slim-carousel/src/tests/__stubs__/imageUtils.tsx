@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { DEFAULT_OPTIONS } from '../components/Carousel/Carousel.config';
+import { DEFAULT_OPTIONS } from '../../components/Carousel/Carousel.config';
 
 export const getRandomInNumericRange = (max: number, min = 0): number => {
   return Math.floor((max - min) * Math.random()) + min;

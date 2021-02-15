@@ -1,14 +1,13 @@
-import React, { Children, ElementType, FC } from 'react';
+import React, { ElementType, FC } from 'react';
 import classNames from 'classnames';
 import { useInterval, useRafState } from 'react-use';
-import { AnimatePresence } from 'framer-motion';
 
 import useCarousel from '../../use/carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
 import { ArrowButtons } from '../ArrowButtons/ArrowButtons';
 import { DotIndicators } from '../DotIndicators/DotIndicators';
-import { Slide } from '../Slide/Slide';
+import { SlidesTrack } from '../SlidesTrack/SlidesTrack';
 import { PauseButton } from '../PauseButton/PauseButton';
 
 import './Carousel.scss';
@@ -115,25 +114,16 @@ export const Carousel: FC<CarouselProps> = (props) => {
       <div className='wrapper relative' style={styles} {...pauseOnHover}>
         {/* <h1 className='primary--text'>{current}</h1> */}
         <div className='g-slim__carousel overflow-hidden w-full absolute pin grid place-center'>
-          <AnimatePresence initial={false}>
-            {children &&
-              Children.map(children, (el, i) => {
-                return (
-                  <Slide
-                    key={i}
-                    current={current}
-                    index={i}
-                    transitionSpeed={transitionSpeed}
-                    scaleOnHover={scaleOnHover}
-                    onUpdate={handlePageChange}
-                    onDragStart={pause}
-                    onDragEnd={resume}
-                  >
-                    {el}
-                  </Slide>
-                );
-              })}
-          </AnimatePresence>
+          <SlidesTrack
+            current={current}
+            transitionSpeed={transitionSpeed}
+            scaleOnHover={scaleOnHover}
+            onUpdate={handlePageChange}
+            onDragStart={pause}
+            onDragEnd={resume}
+          >
+            {children}
+          </SlidesTrack>
         </div>
         {showArrows && (
           <ArrowButtons

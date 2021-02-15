@@ -1,0 +1,12 @@
+.g-slim__slide {
+  max-width: 100vw;
+}
+
+.slide__item-wrapper {
+  // prevents default behaviour on images dragging
+  // assumming only images are passed
+  pointer-events: none;
+  img {
+    display: block;
+  }
+}

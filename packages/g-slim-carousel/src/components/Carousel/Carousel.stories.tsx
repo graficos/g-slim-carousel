@@ -5,11 +5,7 @@ import { Carousel, CarouselProps } from './Carousel';
 import { DEFAULT_OPTIONS } from './Carousel.config';
 
 // these methods are only used to support the Storybook demos
-import {
-  getImageSource,
-  getRandomInNumericRange,
-  getRandomListOfImages,
-} from '../../tests/imageUtils';
+import { getRandomInNumericRange, getRandomListOfImages } from '../../tests/__stubs__/imageUtils';
 
 export default {
   title: 'Carousel',
@@ -98,64 +94,6 @@ export const AddMoreImagesFromCDNDynamically: FC<CarouselProps> = (args) => {
       <hr />
       <Carousel onChange={storyDebugOnChange} {...args}>
         {images}
-      </Carousel>
-    </div>
-  );
-};
-
-const StaticContent = ({ onButtonClick, index }) => {
-  const backgroundImage = `url(${getImageSource({ width: 1600, height: 400, index })})`;
-  return (
-    <div
-      className='absolute pin grid place-center'
-      style={{
-        backgroundImage,
-        backgroundSize: 'cover',
-      }}
-    >
-      <h2
-        style={{
-          fontFamily: 'sans-serif',
-          color: '#fff',
-          textShadow: '0 0 7px rgba(0 0 0 / 50%)',
-        }}
-      >
-        Hi, this is some text content
-      </h2>
-      <button
-        type='button'
-        className='button primary'
-        style={{
-          color: '#FFF',
-          fontWeight: 'bold',
-          fontSize: '2rem',
-          backgroundColor: 'rgba(0 0 0 / 30%)',
-          padding: '.2em .7em',
-          borderRadius: '10px',
-        }}
-        onClick={onButtonClick}
-      >
-        Click me, I&apos;m a button
-      </button>
-    </div>
-  );
-};
-
-export const InteractiveContent: FC<CarouselProps> = (args) => {
-  const onClick = () => {
-    alert('hi 👋🏽');
-  };
-
-  const storyDebugOnChange = action(`Current index`);
-
-  return (
-    <div className='g-slim'>
-      <Carousel onChange={storyDebugOnChange} {...args}>
-        <StaticContent index={5} onButtonClick={onClick} />
-        {getRandomListOfImages({
-          numberOfImages: 1,
-        })}
-        <StaticContent index={8} onButtonClick={onClick} />
       </Carousel>
     </div>
   );

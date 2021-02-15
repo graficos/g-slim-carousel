@@ -1,9 +1,0 @@
-.g-slim__slide {
-  max-width: 100vw;
-  &:not(.g-slim__slide--image) {
-    user-select: auto !important;
-  }
-  &.g-slim__slide--image img {
-    display: block;
-  }
-}
