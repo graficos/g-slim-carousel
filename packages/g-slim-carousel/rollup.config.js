@@ -5,6 +5,7 @@ import ts from 'typescript';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
+import purgecss from '@fullhuman/postcss-purgecss';
 
 import pkg from './package.json';
 
@@ -26,7 +27,14 @@ export default {
   plugins: [
     commonjs(),
     resolve(),
-    postcss(),
+    postcss({
+      extract: true,
+      plugins: [
+        purgecss({
+          content: ['./src/components/*.tsx'],
+        }),
+      ],
+    }),
     typescript({
       typescript: ts,
       tsconfig: 'tsconfig.json',

@@ -68,6 +68,7 @@
     "yarn": "^1.5"
   },
   "dependencies": {
+    "@fullhuman/postcss-purgecss": "^4.0.0",
     "classnames": "^2.2.6",
     "framer": "^1.2.21",
     "framer-motion": "^3.3.0",
