@@ -13,12 +13,12 @@ export default {
   external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   output: [
     {
-      file: `dist/${pkg.module}`,
+      file: pkg.module,
       format: 'es',
       sourcemap: true,
     },
     {
-      file: `dist/${pkg.main}`,
+      file: pkg.main,
       format: 'cjs',
       sourcemap: true,
     },
@@ -40,6 +40,7 @@ export default {
           '**/*.stories.tsx',
           'node_modules',
           'dist',
+          'src/tests',
         ],
         compilerOptions: {
           sourceMap: true,
@@ -56,17 +57,6 @@ export default {
       targets: [
         { src: 'LICENSE', dest: 'dist' },
         { src: 'README.md', dest: 'dist' },
-        {
-          src: 'package.json',
-          dest: 'dist',
-          transform: (content) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { scripts, devDependencies, husky, release, engines, ...keep } = JSON.parse(
-              content.toString()
-            );
-            return JSON.stringify(keep, null, 2);
-          },
-        },
       ],
     }),
   ],
