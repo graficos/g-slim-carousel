@@ -13,5 +13,8 @@
     "diff": "lerna diff",
     "status": "lerna changed",
     "publish": "lerna publish"
+  },
+  "dependencies": {
+    "@graficos/g-slim-carousel": "^0.0.1-alpha.4"
   }
 }

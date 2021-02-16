@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { Carousel } from '@graficos/g-slim-carousel'
+import { Carousel } from '@graficos/g-slim-carousel/'
 
 import { BRAND } from '../config/BRAND'
 

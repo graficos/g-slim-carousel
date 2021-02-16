@@ -1,4 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import ts from 'typescript';
 import { terser } from 'rollup-plugin-terser';
@@ -12,17 +13,18 @@ export default {
   external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   output: [
     {
-      file: `./${pkg.module}`,
+      file: `dist/${pkg.module}`,
       format: 'es',
       sourcemap: true,
     },
     {
-      file: `./${pkg.main}`,
+      file: `dist/${pkg.main}`,
       format: 'cjs',
       sourcemap: true,
     },
   ],
   plugins: [
+    commonjs(),
     resolve(),
     postcss(),
     typescript({
