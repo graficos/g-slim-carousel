@@ -12,6 +12,12 @@ The project is structured as a monorepo. The actual component is under [packages
 
 Please, refer to the live docs showing all the possible options: https://g-slim-carousel-storybook.netlify.app/
 
+
+## Known Issues
+
+- [ ] #1 1ºDirection issue when manually changing slides with the arrows. 
+
+
 ## ToDo
 
 - [x] Tests
