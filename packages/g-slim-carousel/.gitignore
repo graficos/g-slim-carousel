@@ -2,3 +2,4 @@ storybook-static
 node_modules
 dist
 /yarn-error.log
+*.tgz
