@@ -1,5 +1,4 @@
-import { Point2D } from 'framer-motion';
-import { getNewPage, getStiffness, getSwipeDirection } from './draggingPhysics';
+import { getAppearDirectionX, getStiffness } from './draggingPhysics';
 
 describe('getStiffness', () => {
   const MIN = 100;
@@ -22,23 +21,12 @@ describe('getStiffness', () => {
   });
 });
 
-describe('getSwipeDirection', () => {
-  const getSwipeDirectionOnX = (velocity: Point2D) => getSwipeDirection(velocity, 'x');
-
-  it('returns positive 1 on positive numbers', () => {
-    expect(getSwipeDirectionOnX({ y: 0, x: 40 })).toBe(1);
-    expect(getSwipeDirectionOnX({ y: 0, x: 0 })).toBe(1);
+describe('getAppearDirection', () => {
+  it('returns the inverse of the sign of the velocity', () => {
+    expect(getAppearDirectionX({ y: 0, x: -1 })).toBe(-1);
   });
-  it('returns negative 1 on negative numbers', () => {
-    expect(getSwipeDirectionOnX({ y: 0, x: -40 })).toBe(-1);
-    expect(getSwipeDirectionOnX({ y: 0, x: -0 })).toBe(-1);
-  });
-});
-
-describe('getNewPage', () => {
-  it('handles reversing the swipe direction correctly', () => {
-    expect(getNewPage(0, -1)).toBe(1);
-    expect(getNewPage(1, -1)).toBe(2);
-    expect(getNewPage(5, 1)).toBe(4);
+  it('handles edge cases of zeros', () => {
+    expect(getAppearDirectionX({ y: 0, x: -0 })).toBe(-1);
+    expect(getAppearDirectionX({ y: 0, x: 0 })).toBe(1);
   });
 });

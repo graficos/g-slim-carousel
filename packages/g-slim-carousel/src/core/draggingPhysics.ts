@@ -35,12 +35,9 @@ export const getAppearDirection = (velocity: Point2D, axis: keyof AxisBox2D): Di
     return getZerosDirection(value);
   }
 
-  const appearDirection = negateValue(Math.sign(value));
+  const appearDirection = Math.sign(value);
 
   return appearDirection as Direction;
 };
 
 export const getAppearDirectionX = (vel: Point2D): Direction => getAppearDirection(vel, 'x');
-
-export const getNewPage = (index: number, appearDirection: Direction): number =>
-  index + appearDirection;
