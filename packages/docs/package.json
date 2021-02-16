@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@graficos/g-slim-carousel": "^0.0.1-alpha.3",
+    "@graficos/g-slim-carousel": "0.0.1-alpha.5",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^10.0.6",
     "@tailwindcss/line-clamp": "^0.2.0",

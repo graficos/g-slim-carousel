@@ -280,9 +280,9 @@
   dependencies:
     purgecss "^3.1.3"
 
-"@graficos/g-slim-carousel@^0.0.1-alpha.3":
-  version "0.0.1-alpha.3"
-  resolved "https://npm.pkg.github.com/download/@graficos/g-slim-carousel/0.0.1-alpha.3/60888ebf61474ec28a7933a0c20a307693a47aa98aefad1c6ed0ad9ab9236051#7939639288d9dd617eb7b8003b4b8366614a727f"
+"@graficos/g-slim-carousel@0.0.1-alpha.5":
+  version "0.0.1-alpha.5"
+  resolved "https://npm.pkg.github.com/download/@graficos/g-slim-carousel/0.0.1-alpha.5/e8108b689243329186c80af47a88e0ca96ce8794991d0faabf2d088ca5490a85#4b6e3bf0074bc83833ef5696af2fb7b5ec651163"
   dependencies:
     classnames "^2.2.6"
     framer "^1.2.21"

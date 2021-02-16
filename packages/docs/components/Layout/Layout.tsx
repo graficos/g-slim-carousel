@@ -21,7 +21,7 @@ export default function Layout({
     <div
       className={`${styles.container} ${
         className || ''
-      } mx-auto flex justify-center items-start flex-col min-h-screen pt-4 pb-12`}
+      } mx-auto flex justify-center items-start flex-col min-h-screen pt-4`}
     >
       <Head>
         <title>{title}</title>
@@ -29,25 +29,7 @@ export default function Layout({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <nav>
-          {/* <Link href="/">
-          <a>Home</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/about">
-          <a>About</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/users">
-          <a>Users List</a>
-        </Link>{' '}
-        | <a href="/api/users">Users API</a> */}
-        </nav>
-      </header>
-      {/* display: flex; flex-direction: column; justify-content: flex-start;
-      align-items: center; */}
-      <main className="w-full flex flex-col justify-start items-center min-h-screen">
+      <main className="w-full flex flex-col justify-start items-center min-h-screen pb-14">
         {children}
       </main>
       <footer

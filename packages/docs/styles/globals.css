@@ -23,3 +23,163 @@ a {
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
+
+.g-slim {
+  /**
+   * Visually hide an element, but leave it available for screen readers
+   * @link https://www.w3.org/WAI/tutorials/stylesheets/wai-act-fe16f41e.css
+   */
+  width: 100%;
+}
+.g-slim *,
+.g-slim *:after,
+.g-slim *:before {
+  box-sizing: border-box;
+}
+.g-slim [hidden][hidden] {
+  display: none;
+}
+.g-slim button {
+  cursor: pointer;
+}
+.g-slim .relative {
+  position: relative;
+}
+.g-slim .absolute {
+  position: absolute;
+}
+.g-slim .pin {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.g-slim .w-full {
+  width: 100%;
+}
+.g-slim .block {
+  display: block;
+}
+.g-slim .inline-block {
+  display: inline-block;
+}
+.g-slim .grid {
+  display: grid;
+}
+.g-slim .flex {
+  display: flex;
+}
+.g-slim .place-center {
+  place-items: center;
+}
+.g-slim .primary {
+  background-color: #ec645b;
+}
+.g-slim .primary--text {
+  color: #ec645b;
+}
+.g-slim .primary--fill {
+  fill: #ec645b;
+}
+.g-slim .primary--stroke {
+  stroke: #ec645b;
+}
+.g-slim .primary-disabled {
+  background-color: #f6bab6;
+}
+.g-slim .primary-disabled--text {
+  color: #f6bab6;
+}
+.g-slim .primary-disabled--fill {
+  fill: #f6bab6;
+}
+.g-slim .primary-disabled--stroke {
+  stroke: #f6bab6;
+}
+.g-slim .accent {
+  background-color: #2a60d4;
+}
+.g-slim .accent--text {
+  color: #2a60d4;
+}
+.g-slim .accent--fill {
+  fill: #2a60d4;
+}
+.g-slim .accent--stroke {
+  stroke: #2a60d4;
+}
+.g-slim .overflow-hidden {
+  overflow: hidden;
+}
+.g-slim .visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+.g-slim .z--1 {
+  z-index: -1;
+}
+.g-slim .z-0 {
+  z-index: 0;
+}
+.g-slim .z-1 {
+  z-index: 1;
+}
+.g-slim .z-2 {
+  z-index: 2;
+}
+.g-slim .button {
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.g-slim .button:focus {
+  outline: 2px solid #2a60d4;
+}
+.g-slim__arrow {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+:root .g-slim__arrow__button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+}
+
+.g-slim__arrow--prev {
+  left: 5%;
+}
+
+.g-slim__arrow--next {
+  right: 5%;
+}
+.g-slim__slide {
+  max-width: 100vw;
+}
+
+.slide__item-wrapper {
+  cursor: grab;
+}
+.slide__item-wrapper img {
+  pointer-events: none;
+  display: block;
+}
+.g-slim__pause__button {
+  color: white;
+  padding: 0.2em 0.5em;
+  margin-bottom: 0.3em;
+}
+.g-slim__controls {
+  margin-top: 1em;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
