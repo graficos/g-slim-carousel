@@ -33,9 +33,9 @@ export interface CarouselProps {
   children?: React.ReactNode[];
   className?: string;
 }
+
 /**
  * G Slimg Carousel
- * @see https://www.w3.org/WAI/tutorials/carousels/
  */
 export const Carousel: FC<CarouselProps> = (props) => {
   const {

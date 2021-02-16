@@ -1,2 +1,2 @@
-export * from './components/Carousel';
-export * from './core';
+export { Carousel } from './components/Carousel';
+export { CarouselService } from './core';

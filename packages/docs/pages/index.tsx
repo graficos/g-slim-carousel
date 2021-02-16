@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { Carousel } from '@graficos/g-slim-carousel'
 
 import { BRAND } from '../config/BRAND'
 
@@ -15,6 +16,8 @@ function Home() {
       </h1>
 
       <p className={styles.description}>Graficos.net's Slim (ish) Carousel</p>
+
+      <Carousel></Carousel>
 
       <div className={styles.grid}>
         <div className={styles.card}>

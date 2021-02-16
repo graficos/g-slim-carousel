@@ -9,3 +9,7 @@ We're using:
 - **Typescript**, to get static types and automated autocomplete for the library clients.
 - **Yarn**, as the default package manager
 - **lerna** for the multi-package setup. We could have used just `yarn` workspaces, but `lerna` adds more useful commands on top of `yarn`.
+
+## Resources
+
+- Publishing and Installing Private GitHub Packages using Yarn and Lerna: https://viewsource.io/publishing-and-installing-private-github-packages-using-yarn-and-lerna/

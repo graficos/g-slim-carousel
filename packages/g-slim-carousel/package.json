@@ -1,12 +1,12 @@
 {
   "name": "@graficos/g-slim-carousel",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "G Slim Carousel. A simple carousel for your React projects",
   "author": "gangsthub <paulmelero@gmail.com>",
   "homepage": "https://github.com/graficos/g-slim-carousel",
   "license": "MIT",
-  "main": "dist/index.cjs",
-  "module": "dist/module.js",
+  "main": "index.cjs",
+  "module": "module.js",
   "files": [
     "dist"
   ],
