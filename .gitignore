@@ -2,6 +2,3 @@ node_modules
 /**/node_modules
 /lerna-debug.log
 /.npmrc
-/packages/g-slim-carousel/.npmrc
-/packages/docs/.gitignore
-/packages/docs/.npmrc
