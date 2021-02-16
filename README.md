@@ -15,7 +15,7 @@ Please, refer to the live docs showing all the possible options: https://g-slim-
 
 ## Known Issues
 
-- [ ] Direction issue when manually changing slides with the arrows. [1](https://github.com/graficos/g-slim-carousel/issues/1)
+- [ ] Direction issue when manually changing slides with the arrows. ([#1](https://github.com/graficos/g-slim-carousel/issues/1))
 
 
 ## ToDo
