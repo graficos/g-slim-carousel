@@ -3,7 +3,7 @@ import { AnimatePresence, AnimationProps, motion, Point2D } from 'framer-motion'
 
 import { Direction } from '../../types';
 
-import { getAppearDirectionX, getStiffness, getNewPage } from '../../core/draggingPhysics';
+import { getAppearDirectionX, getStiffness } from '../../core/draggingPhysics';
 import { negateValue } from '../../core/arythmetics';
 
 import './SlidesTrack.scss';
@@ -43,7 +43,7 @@ export const SlidesTrack: FC<SlidesTrackProps> = (props) => {
 
   const handleDrag = (index, velocity: Point2D) => {
     const appearDirection = getAppearDirectionX(velocity);
-    const newPage = getNewPage(index, appearDirection);
+    const newPage = index + appearDirection;
     setAppearDirection(appearDirection as Direction);
     onUpdate && onUpdate(newPage);
   };

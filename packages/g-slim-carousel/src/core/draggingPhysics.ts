@@ -35,7 +35,7 @@ export const getAppearDirection = (velocity: Point2D, axis: keyof AxisBox2D): Di
     return getZerosDirection(value);
   }
 
-  const appearDirection = Math.sign(value);
+  const appearDirection = negateValue(Math.sign(value));
 
   return appearDirection as Direction;
 };

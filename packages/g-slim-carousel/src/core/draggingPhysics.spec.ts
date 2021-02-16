@@ -23,7 +23,7 @@ describe('getStiffness', () => {
 
 describe('getAppearDirection', () => {
   it('returns the inverse of the sign of the velocity', () => {
-    expect(getAppearDirectionX({ y: 0, x: -1 })).toBe(-1);
+    expect(getAppearDirectionX({ y: 0, x: -1 })).toBe(1);
   });
   it('handles edge cases of zeros', () => {
     expect(getAppearDirectionX({ y: 0, x: -0 })).toBe(-1);
