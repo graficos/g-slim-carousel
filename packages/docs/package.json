@@ -1,6 +1,6 @@
 {
   "name": "g-slim-docs",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@graficos/g-slim-carousel": "0.0.1-alpha.2",
+    "@graficos/g-slim-carousel": "^0.0.1-alpha.3",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^10.0.6",
     "@tailwindcss/line-clamp": "^0.2.0",
